@@ -20,8 +20,9 @@ try:
     driver.get("https://webosu.online/search.html?q=2382142")
     time.sleep(5)
     ActionChains(driver).move_by_offset(300,265).click().pause(2).click().move_by_offset(-300,-265).perform()
-    time.sleep(12.5)
+    time.sleep(12)
     img = get_image()
+    img.save("output.png")
     img.show()
 finally:
     driver.quit()
