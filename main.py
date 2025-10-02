@@ -53,7 +53,7 @@ try:
     settings.move_by_offset(35,120).click_and_hold().move_by_offset(-210,0).release() # (500/290,305)
     settings.move_by_offset(210,30).click_and_hold().move_by_offset(-210,0).release() # (500/290,335)
     settings.move_by_offset(210,30).click_and_hold().move_by_offset(-210,0).release() # (500/290,365)
-    settings.move_by_offset(300,-180).click_and_hold().move_by_offset(0,100).release() # (290/590,365/185/285)
+    settings.move_by_offset(300,-180).click_and_hold().move_by_offset(0,100).release() # (290/590,365/185/285) THIS ONE ISN'T WORKING
     settings.move_by_offset(-590,-285).perform()
     time.sleep(0.01)
     print("Grabbing Image")
