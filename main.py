@@ -7,6 +7,17 @@ from PIL import Image
 import time
 import io
 
+'''
+0) a
+1) d
+2) s
+3) w
+4) aw
+5) dw
+6) asw
+7) dsw
+8) null
+'''
 
 with open('instructions.txt','r') as file:
     moves = [int(i) for i in list(file.readlines()[0])]
