@@ -35,12 +35,14 @@ def settings_change():
     time.sleep(1)
     driver.find_element(By.CSS_SELECTOR,"button.button.apply").click()
 
-def game_loop():
+def setup_map():
     game = ActionChains(driver)
     game.move_by_offset(600,300).click().pause(0.1)
     game.move_by_offset(-450,-150).click().pause(0.1)
     game.move_by_offset(350,250).click().perform()
     time.sleep(0.5)
+
+def game_loop():
     ActionChains(driver).send_keys(",").perform()
     actions = ActionChains(driver)
     actions.key_down(Keys.ARROW_UP)
@@ -63,6 +65,7 @@ try:
     time.sleep(1)
     print("GAME")
     '''
+    setup_map()
     game_loop()
     time.sleep(0.01)
     get_image().save("output.png")
