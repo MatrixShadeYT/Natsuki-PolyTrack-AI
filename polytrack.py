@@ -45,13 +45,13 @@ def game_loop():
             currentKeys = []
         actions.pause(0.25)
     actions.perform()
-with open('instructions.txt','r') as file:
+with open('polytrack.txt','r') as file:
     moves = [int(i) for i in list(file.readlines()[0])]
 valuable = f"{random.randint(1000000000000000000000000000000,99999999999999999999999999999999999999999999999999999999999999)}".replace('9',f"{random.randint(0,8)}")
 moves = input(f"PREVIOUS: {moves}\nVALUABLE:{valuable}\nMOVES (can skip to use previous): ").replace('value',valuable)
 show = input("SHOW SCREEN (YES to show): ")
 if moves != "":
-    with open('instructions.txt','w') as file:
+    with open('polytrack.txt','w') as file:
         file.write(moves)
     moves = [int(i) for i in list(moves)]
 options = Options()
