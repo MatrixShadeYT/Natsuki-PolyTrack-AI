@@ -7,26 +7,6 @@ from PIL import Image
 import time
 import io
 
-'''
-0) a
-1) d
-2) s
-3) w
-4) aw
-5) dw
-6) asw
-7) dsw
-8) null
-'''
-
-with open('instructions.txt','r') as file:
-    moves = [int(i) for i in list(file.readlines()[0])]
-options = Options()
-options.add_argument("--headless=new")
-options.add_argument("--disable-gpu")
-options.add_argument("--window-size=780,580")
-driver = webdriver.Chrome(options=options)
-
 def get_image():
     png_bytes = driver.get_screenshot_as_png()
     img = Image.open(io.BytesIO(png_bytes)).convert("RGB")
@@ -54,29 +34,66 @@ def setup_map():
     time.sleep(0.5)
 
 def game_loop():
+    currentKeys = []
     ActionChains(driver).send_keys(",").perform()
     actions = ActionChains(driver)
-    actions.key_down(Keys.ARROW_UP)
     for i in range(len(moves)):
-        if moves[i] == 1:
-            actions.send_keys(Keys.ARROW_LEFT)
-        if moves[i] == 2:
-            actions.send_keys(Keys.ARROW_RIGHT)
+        if i != 0:
+            key = combos[moves[i]]
+            for i in range(len(key)):
+                if not key[i] in currentKeys:
+                    actions.key_down(keyIndex[key[i]])
+                    currentKeys.append(key[i])
+            listed = []
+            for i in range(len(currentKeys)):
+                if not currentKeys[i] in key:
+                    actions.key_up(keyIndex[currentKeys[i]])
+                    listed.append(currentKeys[i])
+            for i in range(len(listed)):
+                currentKeys.remove(listed[i])
+        else:
+            for x in range(len(currentKeys)):
+                actions.key_up(currentKeys[x])
+            currentKeys = []
         actions.pause(0.01)
-    actions.key_up(Keys.ARROW_UP)
     actions.perform()
+
+moves = input("MOVES: ")
+if moves == "":
+    with open('instructions.txt','r') as file:
+        moves = [int(i) for i in list(file.readlines()[0])]
+else:
+    with open('instructions.txt','w') as file:
+        file.write(moves)
+    moves = [int(i) for i in list(moves)]
+options = Options()
+options.add_argument("--headless=new")
+options.add_argument("--disable-gpu")
+options.add_argument("--window-size=780,580")
+driver = webdriver.Chrome(options=options)
+
+keyIndex = {
+    "a": Keys.ARROW_LEFT,
+    "d": Keys.ARROW_RIGHT,
+    "s": Keys.ARROW_DOWN,
+    "w": Keys.ARROW_UP
+}
+combos = [
+    ["a"],
+    ["d"],
+    ["s"],
+    ["w"],
+    ["a","w"],
+    ["d","w"],
+    ["a","s","w"],
+    ["d","s","w"]
+]
 
 try:
     driver.get("https://www.yoosfuhl.com/game/polytrack/index.html")
     time.sleep(3)
-    '''
-    print("SETTINGS")
-    settings_change()
-    get_image().show()
-    time.sleep(1)
-    print("GAME")
-    '''
     setup_map()
+    time.sleep(1)
     game_loop()
     time.sleep(0.01)
     get_image().save("output.png")
