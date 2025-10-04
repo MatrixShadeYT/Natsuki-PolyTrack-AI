@@ -6,6 +6,7 @@ from selenium import webdriver
 from PIL import Image
 import random
 import time
+import os
 import io
 
 def get_image():
@@ -45,10 +46,13 @@ def game_loop():
             currentKeys = []
         actions.pause(0.25)
     actions.perform()
-with open('polytrack.txt','r') as file:
-    moves = [int(i) for i in list(file.readlines()[0])]
+if os.path.exists('polytrack.txt'):
+    with open('polytrack.txt','r') as file:
+        moves = [int(i) for i in list(file.readlines()[0])]
+else:
+    moves = '0'
 valuable = f"{random.randint(1000000000000000000000000000000,99999999999999999999999999999999999999999999999999999999999999)}".replace('9',f"{random.randint(0,8)}")
-moves = input(f"PREVIOUS: {moves}\nVALUABLE:{valuable}\nMOVES (can skip to use previous): ").replace('value',valuable)
+moves = input(f"PREVIOUS: {moves}\nVALUABLE (type value):{valuable}\nMOVES (can skip to use previous): ").replace('value',valuable)
 show = input("SHOW SCREEN (YES to show): ")
 if moves != "":
     with open('polytrack.txt','w') as file:
