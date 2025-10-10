@@ -7,7 +7,6 @@ from threading import Thread
 from PIL import Image
 import numpy as np
 import time
-import os
 import io
 
 options = Options()
@@ -61,7 +60,6 @@ def get_data():
     return [checkpoints,speed]
 
 def move(num,wait=0.01):
-    combos = [i for i in combos]
     x = ActionChains(driver)
     if num == 0:
         for i in range(len(currentKeys)):
@@ -81,8 +79,7 @@ def runtime(num,func):
         time.sleep(3.1)
         setup_map()
         time.sleep(3)
-        os.system('cls')
-        print('SYS')
+        print('\nSYS')
         func(num)
         time.sleep(1)
         print('\nDATA')
