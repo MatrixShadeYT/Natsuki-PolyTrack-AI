@@ -1,13 +1,12 @@
 from tensorflow import keras
-from polytrack import combos
 import tensorflow as tf
 import numpy as np
 
 def reward_loss(y_true,y_pred):
     return -reduce_mean(y_true*math.log(y_pred+1e-10))
 
-class imgModel:
-    def __init__(self,file=None,scale=128):
+class imgModel: # SCALE IS IMAGE ARRAY SIZE, OUTS is output
+    def __init__(self,file=None,outs=1,scale=128):
         self.createModel(scale)
         if file:
             self.load(file)
@@ -18,7 +17,7 @@ class imgModel:
             keras.layers.MaxPooling2D(),
             keras.layers.Flatten(),
             keras.layers.Dense(64,activation='relu'),
-            keras.layers.Dense(len(combos),activation='softmax')
+            keras.layers.Dense(outs,activation='softmax')
         ])
         self.model.optimizer = keras.optimizers.Adam()
     def predict(self,img: np.array):

@@ -1,9 +1,10 @@
+from polytrack import combos
 import numpy as np
 import natsuki
 import time
 
 runLen = 30#int(input("TIME (SECS): "))
-model = natsuki.imgModel(scale=128)
+model = natsuki.imgModel(outs=combos,scale=128)
 
 import polytrack
 
