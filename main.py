@@ -16,5 +16,8 @@ def program(num):
         move = np.argmax(pred)
         print(f"MOVE: {move}")
         polytrack.move(move)
+        data = polytrack.get_data()
+        reward = int(data[0][0])+int(data[1])
+        model.train(reward)
 
 polytrack.runtime(runLen,program)
