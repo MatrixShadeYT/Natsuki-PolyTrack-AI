@@ -2,16 +2,14 @@ import polytrack
 import natsuki
 import time
 
-runLen = int(input("TIME (SECS): "))
+runLen = 5#int(input("TIME (SECS): "))
 model = natsuki.imgModel(scale=128)
 
-def program(*args):
+def program(num):
     x = time.time()
-    while time.time() - x < args[0]:
-        img = polytrack.get_image()
+    while time.time() - x < num:
+        img = polytrack.get_image(128)
         pred = model.predict(img)
-        move = pred.index(max(pred))
-        polytrack.move(move)
+        print(f"PRED: {pred[0]}")
 
-while True:
-    polytrack.runtime(runLen,program)
+polytrack.runtime(runLen,program)
