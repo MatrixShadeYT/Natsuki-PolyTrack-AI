@@ -1,4 +1,3 @@
-from tensorflow import keras
 import tensorflow as tf
 import numpy as np
 
@@ -11,15 +10,15 @@ class imgModel: # SCALE IS IMAGE ARRAY SIZE, OUTS is output
         if file:
             self.load(file)
     def createModel(self,scale,outs):
-        self.model = keras.Sequential([
-            keras.layers.Input((scale,scale,3)),
-            keras.layers.Conv2D(32,(3,3),activation='relu'),
-            keras.layers.MaxPooling2D(),
-            keras.layers.Flatten(),
-            keras.layers.Dense(64,activation='relu'),
-            keras.layers.Dense(outs,activation='softmax')
+        self.model = tf.keras.Sequential([
+            tf.keras.layers.Input((scale,scale,3)),
+            tf.keras.layers.Conv2D(32,(3,3),activation='relu'),
+            tf.keras.layers.MaxPooling2D(),
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(64,activation='relu'),
+            tf.keras.layers.Dense(outs,activation='softmax')
         ])
-        self.model.optimizer = keras.optimizers.Adam()
+        self.model.optimizer = tf.keras.optimizers.Adam()
     def predict(self,img: np.array):
         value = self.model.predict(img)
         return value
