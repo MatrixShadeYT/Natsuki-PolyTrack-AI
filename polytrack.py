@@ -5,11 +5,13 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from threading import Thread
 from PIL import Image
+import numpy as np
 import time
+import os
 import io
 
 options = Options()
-options.add_argument("--headless=new")
+#options.add_argument("--headless=new")
 options.add_argument("--window-size=780,580")
 driver = webdriver.Chrome(options=options)
 
@@ -38,9 +40,13 @@ def setup_map():
     game.move_by_offset(350,250).click().perform()
     time.sleep(0.5)
 
-def get_image():
+def get_image(scale=None):
     png_bytes = driver.get_screenshot_as_png()
     img = Image.open(io.BytesIO(png_bytes)).convert("RGB")
+    if scale:
+        img.resize((scale,scale))
+        img = np.array(img)/255.0
+        img = np.expand_dims(img,axis=0).astype(np.float32)
     return img
 
 def get_data():
@@ -69,19 +75,17 @@ def move(num,wait=0.01):
                 x.key_down(combos[num][i])
     x.pause(wait).perform()
 
-def system(num,func,*args):
-    t = Thread(target=func,args=(*args))
-    time.sleep(num)
-    t.join()
-
-def runtime(num,func,*args):
+def runtime(num,func):
     try:
         driver.get("https://www.yoosfuhl.com/game/polytrack/index.html")
         time.sleep(3.1)
         setup_map()
-        time.sleep(2)
-        system(num,func,*args)
+        time.sleep(3)
+        os.system('cls')
+        print('SYS')
+        func(num)
         time.sleep(1)
+        print('\nDATA')
         data = get_data()
         print(f"Checkpoints: {data[0][0]}/{data[0][1]}\nSpeed: {data[1]}")
     finally:
