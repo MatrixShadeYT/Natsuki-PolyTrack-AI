@@ -39,7 +39,7 @@ def get_image(scale=None):
     png_bytes = driver.get_screenshot_as_png()
     img = Image.open(io.BytesIO(png_bytes)).convert("RGB")
     if scale:
-        img.resize((scale,scale))
+        img = img.resize((scale,scale))
         img = np.array(img)/255.0
         img = np.expand_dims(img,axis=0).astype(np.float32)
     return img
