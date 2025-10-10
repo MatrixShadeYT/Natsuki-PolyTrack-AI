@@ -10,6 +10,11 @@ import time
 import os
 import io
 
+options = Options()
+#options.add_argument("--headless=new")
+options.add_argument("--window-size=780,580")
+driver = webdriver.Chrome(options=options)
+
 currentKeys = []
 keyIndex = {
     "a": Keys.ARROW_LEFT,
@@ -71,10 +76,6 @@ def move(num,wait=0.01):
     x.pause(wait).perform()
 
 def runtime(num,func):
-    options = Options()
-    #options.add_argument("--headless=new")
-    options.add_argument("--window-size=780,580")
-    driver = webdriver.Chrome(options=options)
     try:
         driver.get("https://www.yoosfuhl.com/game/polytrack/index.html")
         time.sleep(3.1)
