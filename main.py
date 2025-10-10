@@ -1,13 +1,11 @@
-from polytrack import combos
+from PIL import Image
 import numpy as np
 import natsuki
 import time
+model = natsuki.imgModel(outs=9,scale=128)
 
 runLen = 30#int(input("TIME (SECS): "))
-model = natsuki.imgModel(outs=combos,scale=128)
-
 import polytrack
-
 def program(num):
     keys = polytrack.move(3)
     prevSpeed = polytrack.get_data()[1]
@@ -27,5 +25,4 @@ def program(num):
         print(f"REWARD: {reward}")
         prevSpeed = data[1]
         model.train(reward)
-
 polytrack.runtime(runLen,program)
