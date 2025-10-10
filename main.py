@@ -8,8 +8,9 @@ model = natsuki.imgModel(scale=128)
 import polytrack
 
 def program(num):
-    keys = polytrack.move(4)
+    keys = polytrack.move(3)
     prevSpeed = polytrack.get_data()[1]
+    time.sleep(1)
     keys = polytrack.move(0,keys)
     x = time.time()
     while time.time() - x < num:
@@ -21,10 +22,9 @@ def program(num):
         print(f"MOVE: {move}")
         keys = polytrack.move(move,keys,0.05)
         data = polytrack.get_data()
-        reward = 100*(int(data[0][0])+int(data[1]-prevSpeed))
+        reward = 100*(int(data[0][0])+int(data[1]-prevSpeed)-1)
         print(f"REWARD: {reward}")
         prevSpeed = data[1]
         model.train(reward)
-    model.save("natsu")
 
 polytrack.runtime(runLen,program)

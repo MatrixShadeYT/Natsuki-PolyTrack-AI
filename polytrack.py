@@ -58,25 +58,22 @@ def get_data():
     return [checkpoints,speed]
 
 def move(num,currentKeys=[],wait=0.01):
+    currentKeys = [i for i in currentKeys]
     x = ActionChains(driver)
-    if num == 0:
-        for i in range(len(currentKeys)):
-            print(f"KEYS XD: {currentKeys[i]}")
-            x.key_up(keyIndex[currentKeys[i]])
-            currentKeys.remove(currentKeys[i])
-    else:
+    listed = []
+    for i in currentKeys:
+        if not i in combos[num]:
+            x.key_up(keyIndex[i])
+            listed.append(i)
+    for i in listed:
+        currentKeys.remove(i)
+    if num != 0:
         num -= 1
-        for i in range(len(currentKeys)):
-            try:
-                if not currentKeys[i] in combos[num]:
-                    x.key_up(keyIndex[currentKeys[i]])
-                    currentKeys.remove(currentKeys[i])
-            except Exception as e:
-                print(f"Error: {e}")
-        for i in range(len(combos[num])):
-            if not combos[num][i] in currentKeys:
-                x.key_down(keyIndex[combos[num][i]])
-                currentKeys.append(combos[num][i])
+        for i in combos[num]:
+            if not i in currentKeys:
+                x.key_down(keyIndex[i])
+                currentKeys.append(i)
+    print(currentKeys)
     x.pause(wait).perform()
     return currentKeys
 
