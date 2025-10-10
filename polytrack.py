@@ -14,7 +14,6 @@ options = Options()
 options.add_argument("--window-size=780,580")
 driver = webdriver.Chrome(options=options)
 
-currentKeys = []
 keyIndex = {
     "a": Keys.ARROW_LEFT,
     "d": Keys.ARROW_RIGHT,
@@ -24,7 +23,6 @@ keyIndex = {
 combos = [
     ["a"],
     ["d"],
-    ["s"],
     ["w"],
     ["a","w"],
     ["d","w"],
@@ -59,23 +57,28 @@ def get_data():
         speed += li[length-1][i]*int(val)
     return [checkpoints,speed]
 
-def move(num,wait=0.01):
+def move(num,currentKeys=[],wait=0.01):
     x = ActionChains(driver)
     if num == 0:
         for i in range(len(currentKeys)):
-            x.key_up(currentKeys[i])
+            print(f"KEYS XD: {currentKeys[i]}")
+            x.key_up(keyIndex[currentKeys[i]])
             currentKeys.remove(currentKeys[i])
     else:
         num -= 1
         for i in range(len(currentKeys)):
-            if not currentKeys[i] in combos[num]:
-                x.key_up(currentKeys[i])
-                currentKeys.remove(currentKeys[i])
+            try:
+                if not currentKeys[i] in combos[num]:
+                    x.key_up(keyIndex[currentKeys[i]])
+                    currentKeys.remove(currentKeys[i])
+            except Exception as e:
+                print(f"Error: {e}")
         for i in range(len(combos[num])):
             if not combos[num][i] in currentKeys:
-                x.key_down(combos[num][i])
+                x.key_down(keyIndex[combos[num][i]])
                 currentKeys.append(combos[num][i])
     x.pause(wait).perform()
+    return currentKeys
 
 def runtime(num,func):
     try:

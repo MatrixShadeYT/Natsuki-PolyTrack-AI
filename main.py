@@ -2,25 +2,29 @@ import numpy as np
 import natsuki
 import time
 
-runLen = int(input("TIME (SECS): "))
+runLen = 30#int(input("TIME (SECS): "))
 model = natsuki.imgModel(scale=128)
 
 import polytrack
 
 def program(num):
-    polytrack.move(4)
+    keys = polytrack.move(4)
     prevSpeed = polytrack.get_data()[1]
+    keys = polytrack.move(0,keys)
     x = time.time()
     while time.time() - x < num:
+        keys = [i for i in keys]
         img = polytrack.get_image(128)
         pred = model.predict(img)[0]
         print(f"PRED: {pred}")
         move = np.argmax(pred)
         print(f"MOVE: {move}")
-        polytrack.move(move)
+        keys = polytrack.move(move,keys,0.05)
         data = polytrack.get_data()
         reward = 100*(int(data[0][0])+int(data[1]-prevSpeed))
+        print(f"REWARD: {reward}")
         prevSpeed = data[1]
         model.train(reward)
+    model.save("natsu")
 
 polytrack.runtime(runLen,program)
