@@ -1,4 +1,5 @@
 from tensorflow import keras
+from polytrack import combos
 import tensorflow as tf
 import numpy as np
 
@@ -17,16 +18,16 @@ class imgModel:
             keras.layers.MaxPooling2D(),
             keras.layers.Flatten(),
             keras.layers.Dense(64,activation='relu'),
-            keras.layers.Dense(9,activation='softmax')
+            keras.layers.Dense(len(combos),activation='softmax')
         ])
         self.model.optimizer = keras.optimizers.Adam()
     def predict(self,img: np.array):
         value = self.model.predict(img)
         return value
     def save(self,filename):
-        self.model.save_weights(f"{filename}.h5")
+        self.model.save_weights(f"{filename}.weights.h5")
     def load(self,filename):
-        self.model.load_weights(f"{filename}.h5")
+        self.model.load_weights(f"{filename}.weights.h5")
     def train(self,r):
         with tf.GradientTape() as tape:
             base_reward = tf.cast(r,tf.float32)
