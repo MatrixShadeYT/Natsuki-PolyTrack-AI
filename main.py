@@ -1,10 +1,11 @@
 import numpy as np
-import polytrack
 import natsuki
 import time
 
-runLen = 5#int(input("TIME (SECS): "))
+runLen = int(input("TIME (SECS): "))
 model = natsuki.imgModel(scale=128)
+
+import polytrack
 
 def program(num):
     x = time.time()
