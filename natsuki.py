@@ -7,10 +7,10 @@ def reward_loss(y_true,y_pred):
 
 class imgModel: # SCALE IS IMAGE ARRAY SIZE, OUTS is output
     def __init__(self,file=None,outs=1,scale=128):
-        self.createModel(scale)
+        self.createModel(scale,outs)
         if file:
             self.load(file)
-    def createModel(self,scale):
+    def createModel(self,scale,outs):
         self.model = keras.Sequential([
             keras.layers.Input((scale,scale,3)),
             keras.layers.Conv2D(32,(3,3),activation='relu'),
