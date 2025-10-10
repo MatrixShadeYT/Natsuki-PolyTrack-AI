@@ -27,12 +27,11 @@ class imgModel:
         self.model.save_weights(f"{filename}.h5")
     def load(self,filename):
         self.model.load_weights(f"{filename}.h5")
-    def train(r):
-        with GradientTape() as tape:
+    def train(self,r):
+        with tf.GradientTape() as tape:
             base_reward = tf.cast(r,tf.float32)
             weight_contrib = tf.add_n([tf.reduce_sum(tf.abs(w)) for w in self.model.trainable_variables])
             reward = base_reward+0.001*weight_contrib
-            print(f"REWARD: {reward}")
             loss = -tf.reduce_mean(reward)
         grads = tape.gradient(loss,self.model.trainable_variables)
         self.model.optimizer.apply_gradients(zip(grads,self.model.trainable_variables))

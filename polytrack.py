@@ -64,13 +64,17 @@ def move(num,wait=0.01):
     if num == 0:
         for i in range(len(currentKeys)):
             x.key_up(currentKeys[i])
+            currentKeys.remove(currentKeys[i])
     else:
+        num -= 1
         for i in range(len(currentKeys)):
             if not currentKeys[i] in combos[num]:
                 x.key_up(currentKeys[i])
+                currentKeys.remove(currentKeys[i])
         for i in range(len(combos[num])):
             if not combos[num][i] in currentKeys:
                 x.key_down(combos[num][i])
+                currentKeys.append(combos[num][i])
     x.pause(wait).perform()
 
 def runtime(num,func):
