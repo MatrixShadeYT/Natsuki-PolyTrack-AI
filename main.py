@@ -9,11 +9,13 @@ runLen = int(input("TIME (SECS): "))
 print("STARTING...")
 import polytrack
 def program(num):
+    running = False
     keys = polytrack.move(3)
     prevSpeed = polytrack.get_data()[1]
     keys = polytrack.move(0,keys)
     x = time.time()
-    while time.time() - x < num:
+    while running or time.time() - x < num:
+        running = True
         keys = [i for i in keys]
         img = polytrack.get_image(128)
         pred = model.predict(img)[0]
@@ -26,4 +28,5 @@ def program(num):
         print(f"REWARD: {reward}")
         prevSpeed = data[1]
         model.train(reward)
+        running = False
 polytrack.runtime(runLen,program)
