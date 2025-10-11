@@ -11,7 +11,7 @@ import polytrack
 def program(num):
     running = False
     keys = polytrack.move(3)
-    prevSpeed = polytrack.get_data()[1]
+    prevSpeed = 0
     keys = polytrack.move(0,keys)
     x = time.time()
     while running or time.time() - x < num:
