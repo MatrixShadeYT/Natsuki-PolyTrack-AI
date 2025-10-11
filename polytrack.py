@@ -9,6 +9,7 @@ import numpy as np
 import time
 import io
 
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 options = Options()
 #options.add_argument("--headless=new")
 options.add_argument("--window-size=780,580")
