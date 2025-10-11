@@ -4,14 +4,13 @@ import natsuki
 import time
 
 model = natsuki.imgModel(outs=9,scale=128)
-runLen = 30#int(input("TIME (SECS): "))
+runLen = int(input("TIME (SECS): "))
 
 print("STARTING...")
 import polytrack
 def program(num):
     keys = polytrack.move(3)
     prevSpeed = polytrack.get_data()[1]
-    time.sleep(1)
     keys = polytrack.move(0,keys)
     x = time.time()
     while time.time() - x < num:
