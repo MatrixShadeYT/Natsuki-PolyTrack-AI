@@ -61,14 +61,13 @@ def move(num,currentKeys=[],wait=0.01):
     x = ActionChains(driver)
     listed = []
     for i in currentKeys:
-        if not i in combos[num]:
+        if not i in combos[num-1]:
             x.key_up(keyIndex[i])
             listed.append(i)
     for i in listed:
         currentKeys.remove(i)
     if num != 0:
-        num -= 1
-        for i in combos[num]:
+        for i in combos[num-1]:
             if not i in currentKeys:
                 x.key_down(keyIndex[i])
                 currentKeys.append(i)
@@ -84,10 +83,5 @@ def runtime(num,func):
         time.sleep(3)
         print('\nSYS')
         func(num)
-        time.sleep(1)
-        print('\nDATA')
-        data = get_data()
-        print(f"Checkpoints: {data[0][0]}/{data[0][1]}\nSpeed: {data[1]}")
-        get_image().show()
     finally:
         driver.quit()

@@ -9,6 +9,7 @@ runLen = int(input("TIME (SECS): "))
 print("STARTING...")
 import polytrack
 def program(num):
+    totalRewards = 0
     running = False
     keys = polytrack.move(3)
     prevSpeed = 0
@@ -25,8 +26,11 @@ def program(num):
         keys = polytrack.move(move,keys,0.05)
         data = polytrack.get_data()
         reward = 100*(int(data[0][0])+int(data[1]-prevSpeed)-1)
-        print(f"REWARD: {reward}")
+        print(f"REWARD: {reward}\n")
+        totalRewards += reward
         prevSpeed = data[1]
         model.train(reward)
         running = False
+    print(f"DATA\nTOTAL REWARDS: {totalRewards}")
+    data = polytrack.get_data()
 polytrack.runtime(runLen,program)
