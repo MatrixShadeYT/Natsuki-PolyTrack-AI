@@ -2,9 +2,11 @@ from PIL import Image
 import numpy as np
 import natsuki
 import time
-model = natsuki.imgModel(outs=9,scale=128)
 
+model = natsuki.imgModel(outs=9,scale=128)
 runLen = 30#int(input("TIME (SECS): "))
+
+print("STARTING...")
 import polytrack
 def program(num):
     keys = polytrack.move(3)
