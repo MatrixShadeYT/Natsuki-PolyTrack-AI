@@ -1,17 +1,14 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
 from selenium import webdriver
 from PIL import Image
-import pytesseract
 import numpy as np
 import time
 import io
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 options = Options()
-#options.add_argument("--headless=new")
+options.add_argument("--headless=new")
 options.add_argument("--window-size=780,580")
 driver = webdriver.Chrome(options=options)
 
@@ -48,14 +45,9 @@ def get_image(scale=None):
     return img
 
 def get_data():
-    base_img = get_image()
-    img = base_img.crop((1035,615,1100,640))
-    text = pytesseract.image_to_string(img)
-    speed = int(text)
-    img = base_img.crop((40,612,100,642))
-    text = pytesseract.image_to_string(img)
-    checkpoints = [int(i) for i in text.split('/')]
-    return [checkpoints,speed]
+    speed = driver.execute_script('return document.querySelector(".speedometer").children[0].children[0].innerHTML').strip().replace('<span>','').replace('</span>','')
+    checkpoints = [int(i) for i in driver.execute_script('return document.querySelector(".checkpoints").children[0].children[1].innerHTML').strip().split('/')]
+    return [checkpoints,int(speed)]
 
 def move(num,currentKeys=[],wait=0.01):
     currentKeys = [i for i in currentKeys]
