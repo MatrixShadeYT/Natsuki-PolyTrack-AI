@@ -45,10 +45,15 @@ def get_image(scale=None):
     return img
 
 def get_data():
-    speed = driver.execute_script('return document.querySelector(".speedometer").children[0].children[0].innerHTML')
-    speed = int(speed.replace('<span>','').replace('</span>',''))
-    checkpoints = driver.execute_script('return document.querySelector(".checkpoints").children[0].children[1].innerHTML')
-    checkpoints = [int(i) for i in checkpoints.split('/')]
+    try:
+        data = driver.execute_script("return 'x,y'.replace('x',document.querySelector('.checkpoint>div>span').innerHTML).replace('y',document.querySelector('.speedometer>div>span').innerHTML)")
+        data = data.split(',')
+    except Exception as e:
+        print(f"ERR: {e}")
+        data = ['0/3','<span>0</span>']
+    speed = int(data[1].replace('<span>','').replace('</span>',''))
+    checkpoints = [int(i) for i in data[0].split('/')]
+    print(f"Checkpoints: {checkpoints}\nSpeed: {speed}")
     return [checkpoints,speed]
 
 def move(num,currentKeys=[],wait=0.01):
@@ -83,5 +88,6 @@ def runtime(num,func):
         print('\nDATA')
         data = get_data()
         print(f"Checkpoints: {data[0][0]}/{data[0][1]}\nSpeed: {data[1]}")
+        get_image().show()
     finally:
         driver.quit()
