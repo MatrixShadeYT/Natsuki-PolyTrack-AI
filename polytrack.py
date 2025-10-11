@@ -3,8 +3,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-from threading import Thread
 from PIL import Image
+import pytesseract
 import numpy as np
 import time
 import io
@@ -47,14 +47,13 @@ def get_image(scale=None):
     return img
 
 def get_data():
-    checkpoints = [i for i in driver.execute_script("return document.getElementsByClassName('checkpoint')[0].children[0].children[1].innerHTML").split('/')]
-    speed = 0
-    length = int(driver.execute_script("return document.getElementsByClassName('speedometer')[0].children[0].children[0].children.length;"))
-    li = [[1],[10,1],[100,10,1],[1000,100,10,1]]
-    for i in range(length):
-        time.sleep(0.1)
-        val = driver.execute_script(f"return document.getElementsByClassName('speedometer')[0].children[0].children[0].children[{i}].innerHTML")
-        speed += li[length-1][i]*int(val)
+    base_img = get_image()
+    img = base_img.crop((1035,615,1100,640))
+    text = pytesseract.image_to_string(img)
+    speed = int(text)
+    img = base_img.crop((40,612,100,642))
+    text = pytesseract.image_to_string(img)
+    checkpoints = [int(i) for i in text.split('/')]
     return [checkpoints,speed]
 
 def move(num,currentKeys=[],wait=0.01):
