@@ -45,9 +45,11 @@ def get_image(scale=None):
     return img
 
 def get_data():
-    speed = driver.execute_script('return document.querySelector(".speedometer").children[0].children[0].innerHTML').strip().replace('<span>','').replace('</span>','')
-    checkpoints = [int(i) for i in driver.execute_script('return document.querySelector(".checkpoints").children[0].children[1].innerHTML').strip().split('/')]
-    return [checkpoints,int(speed)]
+    speed = driver.execute_script('return document.querySelector(".speedometer").children[0].children[0].innerHTML')
+    speed = int(speed.replace('<span>','').replace('</span>',''))
+    checkpoints = driver.execute_script('return document.querySelector(".checkpoints").children[0].children[1].innerHTML')
+    checkpoints = [int(i) for i in checkpoints.split('/')]
+    return [checkpoints,speed]
 
 def move(num,currentKeys=[],wait=0.01):
     currentKeys = [i for i in currentKeys]
